@@ -1,0 +1,16 @@
+<RelativeLayout
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    tools:context="com.example.aiuake4.atlascompass.CalendarActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Hey our button brought you to this new view"
+        android:id="@+id/newviewtest"
+        android:layout_centerHorizontal="true"
+        android:singleLine="false" />
+</RelativeLayout>
