@@ -1,6 +1,5 @@
 package com.example.aiuake4.atlascompass;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,26 +7,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CalendarView;
 
 
-public class CompassHome extends Activity {
+public class CompassHome extends Activity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_compass_home);
         Button btn = (Button)findViewById(R.id.calendar_button);
+        btn.setOnClickListener(this);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(CompassHome.this, CalendarActivity.class));
-            }
-        });
+        //btn.setOnClickListener(new View.OnClickListener() {
+         //   @Override
+         //   public void onClick(View v) {
+         //       startActivity(new Intent(CompassHome.this, CalendarActivity.class));
+         //   }
+        //});
     }
 
     @Override
@@ -50,5 +48,20 @@ public class CompassHome extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void buttonClick(){
+        startActivity(new Intent("ATLASCompass.CalendarActivity"));
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.calendar_button:
+                buttonClick();
+                break;
+
+        }
     }
 }
