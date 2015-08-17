@@ -83,8 +83,24 @@
     <GridView
         android:id="@+id/calendar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="280dp"
         android:numColumns="7" >
     </GridView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Testing Cycles"
+        android:id="@+id/textView"
+        android:textSize="25dp" />
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/listView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>
