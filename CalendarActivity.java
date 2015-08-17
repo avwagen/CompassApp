@@ -1,5 +1,6 @@
 package com.example.aiuake4.atlascompass;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,23 +16,30 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ListView;
+
+import org.w3c.dom.Text;
 
 @TargetApi(3)
 public class CalendarActivity extends Activity implements OnClickListener {
     private static final String tag = "MyCalendarActivity";
 
     private TextView currentMonth;
+    private TextView testingDisplay;
+    private ListView listView;
     private Button selectedDayMonthYearButton;
     private ImageView prevMonth;
     private ImageView nextMonth;
@@ -44,12 +52,27 @@ public class CalendarActivity extends Activity implements OnClickListener {
     @SuppressLint({ "NewApi", "NewApi", "NewApi", "NewApi" })
     private final DateFormat dateFormatter = new DateFormat();
     private static final String dateTemplate = "MMMM yyyy";
+    private ItemArrayAdapter itemArrayAdapter;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        listView = (ListView) findViewById(R.id.listView);
+        itemArrayAdapter = new ItemArrayAdapter(getApplicationContext(), R.layout.item_layout);
+
+        Parcelable state = listView.onSaveInstanceState();
+        listView.setAdapter(itemArrayAdapter);
+        listView.onRestoreInstanceState(state);
+
+        InputStream inputStream = getResources().openRawResource(R.raw.tester);
+        CSVFile csvFile = new CSVFile(inputStream);
+        List<String []> scoreList = csvFile.read();
+
+        for(String[] scoreData:scoreList) {
+            itemArrayAdapter.add(scoreData);
+        }
 
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
@@ -386,6 +409,15 @@ public class CalendarActivity extends Activity implements OnClickListener {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+            /*
+            * if(this.date = csv.date){
+            * testDisplay.appendText(csv.text);
+            * }else{
+            * testDisplay.appendTet("No testing scheduled");
+            * }
+            * */
+
         }
 
         public int getCurrentDayOfMonth() {
