@@ -14,6 +14,7 @@ import java.util.Locale;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -36,7 +37,7 @@ import org.w3c.dom.Text;
 @TargetApi(3)
 public class CalendarActivity extends Activity implements OnClickListener {
     private static final String tag = "MyCalendarActivity";
-
+    public GridCellAdapter gridCellAdapter;
     private TextView currentMonth;
     private TextView testingDisplay;
     private ListView listView;
@@ -54,25 +55,13 @@ public class CalendarActivity extends Activity implements OnClickListener {
     private static final String dateTemplate = "MMMM yyyy";
     private ItemArrayAdapter itemArrayAdapter;
 
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        listView = (ListView) findViewById(R.id.listView);
-        itemArrayAdapter = new ItemArrayAdapter(getApplicationContext(), R.layout.item_layout);
 
-        Parcelable state = listView.onSaveInstanceState();
-        listView.setAdapter(itemArrayAdapter);
-        listView.onRestoreInstanceState(state);
-
-        InputStream inputStream = getResources().openRawResource(R.raw.tester);
-        CSVFile csvFile = new CSVFile(inputStream);
-        List<String []> scoreList = csvFile.read();
-
-        for(String[] scoreData:scoreList) {
-            itemArrayAdapter.add(scoreData);
-        }
 
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
@@ -141,7 +130,6 @@ public class CalendarActivity extends Activity implements OnClickListener {
                     + month + " Year: " + year);
             setGridCellAdapterToDate(month, year);
         }
-
     }
 
     @Override
@@ -174,8 +162,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
                 "dd-MMM-yyyy");
 
         // Days in Current Month
-        public GridCellAdapter(Context context, int textViewResourceId,
-                               int month, int year) {
+        public GridCellAdapter(Context context, int textViewResourceId, int month, int year) {
             super();
             this._context = context;
             this.list = new ArrayList<String>();
@@ -409,7 +396,20 @@ public class CalendarActivity extends Activity implements OnClickListener {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            listView = (ListView) findViewById(R.id.listView);
+            itemArrayAdapter = new ItemArrayAdapter(getApplicationContext(), R.layout.item_layout, date_month_year);
 
+            Parcelable state = listView.onSaveInstanceState();
+            listView.setAdapter(itemArrayAdapter);
+            listView.onRestoreInstanceState(state);
+
+            InputStream inputStream = getResources().openRawResource(R.raw.tester);
+            CSVFile csvFile = new CSVFile(inputStream);
+            List<String []> scoreList = csvFile.read();
+
+            for(String[] scoreData:scoreList) {
+                itemArrayAdapter.add(scoreData);
+            }
             /*
             * if(this.date = csv.date){
             * testDisplay.appendText(csv.text);
